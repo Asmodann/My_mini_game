@@ -8,6 +8,7 @@ function Player_(name, canvas) {
 	this.is_alive = true;
 	this.won = false;
 	this.score = 0;
+  this.move = { "LEFT": false, "RIGHT": false };
 
 	this.name = name;
 	this.ctx = canvas.getContext("2d");
@@ -18,18 +19,28 @@ function Player_(name, canvas) {
 Player_.prototype.move_keyboard = function(key, canvas) {
 	switch (key) {
 		case this.direction.LEFT:
-			this.pos_x -= this.movespeed;
-			if (this.pos_x <= this.p_width) {
-				this.pos_x = this.p_width;
-			}
+      this.move.LEFT = !this.move.LEFT;
 			break;
 		case this.direction.RIGHT:
-			this.pos_x += this.movespeed;
-			if (this.pos_x >= canvas.clientWidth - this.p_width) {
-				this.pos_x = canvas.clientWidth - this.p_width;
-			}
+			this.move.RIGHT = !this.move.RIGHT;
 			break;
 	}
+}
+
+Player_.prototype.process_move = function(canvas)
+{
+  if ( this.move.LEFT )
+  {
+    this.pos_x -= this.movespeed;
+    if (this.pos_x <= this.p_width) this.pos_x = this.p_width;
+  }
+  if ( this.move.RIGHT )
+  {
+    this.pos_x += this.movespeed;
+      if (this.pos_x >= canvas.clientWidth - this.p_width) {
+        this.pos_x = canvas.clientWidth - this.p_width;
+      }
+  }
 }
 
 Player_.prototype.draw = function(canvas) {
@@ -59,6 +70,3 @@ Player_.prototype.gui = function(canvas, Brick) {
     	this.won = true;
     }
 }
-
-Player_.prototype.getIs_alive = function() { return this.is_alive; }
-Player_.prototype.getWon = function() { return this.won; }

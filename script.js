@@ -22,20 +22,18 @@ window.addEventListener("load", function() {
     window.location.reload();
   });*/
   setInterval(function() {
-    if (!Player.getIs_alive() || Player.getWon()) {
+    if (!Player.is_alive || Player.won) {
       //remake.innerHTML = "<button>Rejouer</button>";
       return false;
     }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    Player.gui(canvas, Brick);
-
-    Player.draw(canvas);
-
-    Brick.draw(canvas, Player);
-
-    Ball.draw(canvas);
     Ball.collisionDetection(Brick, Player);
     Ball.move(canvas, Player);
+    Ball.draw(canvas);
+    Brick.draw(canvas, Player);
+    Player.process_move(canvas);
+    Player.draw(canvas);
+    Player.gui(canvas, Brick);
   }, 30);
   
 });
